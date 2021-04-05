@@ -2,6 +2,8 @@ package Address_Book_Problem;
 
 import java.util.Scanner;
 
+import AddressBookSystem.Person;
+
 class Person{
 	String firstName;
 	String lastName;
@@ -73,16 +75,18 @@ public class AddressBookMain {
 		Person person = null;
 		int choice;
 		do {
-			System.out.println("\n\n********OPTIONS*********\n1]Add Contact\n2]Edit Contact\n3]Exit");
+			System.out.println("\n\n********OPTIONS*********\n1]Add Contact\n2]Edit Contact\n3]Delete Contact\n4]Exit");
 			choice=sc.nextInt();
 			switch(choice) {
 				case 1:person=addPerson(sc);
 						break;
 				case 2:editPerson(person,sc);
 						break;
-				case 3:System.exit(0);
+				case 3:deletePerson(person,sc);
+						break;
+				case 4:System.exit(0);
 			}
-		}while(choice!=3);
+		}while(choice!=4);
 	}
 	public static Person addPerson(Scanner sc) {
 		System.out.println("\nEnter First name :- ");
@@ -189,6 +193,21 @@ public class AddressBookMain {
 			person.setEmail(email);
 			flag=1;
 			System.out.println(person);
+		}
+		if(flag==0) {
+			System.out.println("This name does not exists!");
+		}
+	}
+	public static void deletePerson(Person person,Scanner sc) {
+		sc.nextLine();
+		System.out.println("Enter name of person to be deleted?");
+		String name=sc.nextLine();
+		int flag=0;
+		if(name.equals(person.getFirstName())) {
+			System.out.println("Before Delete:-"+person);
+			person=null;
+			System.out.println("After Delete:-"+person);
+			flag=1;
 		}
 		if(flag==0) {
 			System.out.println("This name does not exists!");

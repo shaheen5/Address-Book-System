@@ -1,6 +1,7 @@
 package Address_Book_Problem;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 class Person{
 	String firstName;
@@ -69,7 +70,7 @@ class AddressBook{
 
 	@Override
 	public String toString() {
-		return "AddressBook [contacts=" + contacts + "]";
+		return "AddressBook [contacts=" + contacts + "]\n";
 	}
 
 	public void addPerson(Scanner sc) {
@@ -212,15 +213,18 @@ class AddressBook{
 }
 
 public class AddressBookMain {
+	static HashMap<String,AddressBook>addressbooks=new HashMap<String,AddressBook>();
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Address Book Program !!!");
 		Scanner sc=new Scanner(System.in);
 		AddressBook addressbook=new AddressBook();
 		int choice;
+		String addressbookName = "Default";
+		addressbooks.put("Default",addressbook);
 		do {
 			System.out.println("\n\n*******************OPTIONS********************\n");
-			System.out.println("1]Add Contact\n2]Edit Contact\n3]Delete Contact\n4]Exit");
+			System.out.println("1]Add Contact\n2]Edit Contact\n3]Delete Contact\n4]Add New Address Book\n5]Display All AddressBooks\n6]Exit");
 			choice=sc.nextInt();
 			switch(choice) {
 				case 1:addressbook.addPerson(sc);
@@ -232,8 +236,38 @@ public class AddressBookMain {
 				case 3:addressbook.deletePerson(sc);
 				       addressbook.display();
 					   break;
-				case 4:System.exit(0);
+				case 4:sc.nextLine();
+				       System.out.println("Choose New AddressBook ::\n");
+				       System.out.println("Enter name of Address Book:");
+				       addressbookName=sc.nextLine();
+				       if(isKeyExists(addressbookName)) {
+				    	   addressbook=addressbooks.get(addressbookName);
+				       }
+				       else {
+				    	   AddressBook tempAddressBook=new AddressBook();
+				    	   addressbooks.put(addressbookName, tempAddressBook);
+				    	   addressbook=tempAddressBook;
+				       }
+				       break;
+				case 5:System.out.println("*******All Address Book Details*******\n");
+						display();
+						break;
+				case 6:	System.exit(0);
 			}
-		}while(choice!=4);
+		}while(choice!=6);
+	}
+	public static boolean isKeyExists(String name) {
+		return addressbooks.containsKey(name);
+		
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static void display() {
+		Iterator<Entry<String, AddressBook>> trav=addressbooks.entrySet().iterator();
+		while(trav.hasNext()) {
+			Map.Entry record=(Map.Entry)trav.next();
+			AddressBook adBook=(AddressBook)record.getValue();
+			System.out.println("\""+record.getKey()+"\""+" "+adBook);
+		}
 	}
 }

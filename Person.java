@@ -1,13 +1,13 @@
 package com.addressbooksystem;
 
 public class Person {
-        String firstName;
-        String lastName;
-        String address;
-        String city;
-        String state;
-        String zipCode;
-        String phoneNumber;
+    	String firstName;
+    	String lastName;
+    	String address;
+    	String city;
+    	String state;
+    	String zipCode;
+    	String phoneNumber;
         String email;
 
 	public Person(String firstName, String lastName, String address, String city, String state, String zipCode,
@@ -20,7 +20,7 @@ public class Person {
 		this.zipCode = zipCode;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
-	}
+		}
 
 	@Override
 	public String toString() {
@@ -62,11 +62,11 @@ public class Person {
 		if (!(this.firstName.equalsIgnoreCase(that.firstName))) return false;
 		if (!(this.lastName.equalsIgnoreCase(that.lastName))) return false;
 		if (!(this.address.equalsIgnoreCase(that.address)))   return false;
-		if (!(this.city.equalsIgnoreCase(that.city)))   return false;
+		if (!(this.city.equalsIgnoreCase(that.city)))   return false; 
 		if (!(this.state.equalsIgnoreCase(that.state)))   return false;
 		if (!(this.zipCode.equalsIgnoreCase(that.zipCode)))  return false;
 		if (!(this.phoneNumber.equalsIgnoreCase(that.phoneNumber))) return false;
 		if (!(this.email.equalsIgnoreCase(that.email)))  return false;
-		return true;
+		return true;	
 	}
 }

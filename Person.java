@@ -37,8 +37,16 @@ public class Person {
 		this.city = city;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getState() {
+		return state;
 	}
 
 	public void setZipCode(String zipCode) {
@@ -67,6 +75,6 @@ public class Person {
 		if (!(this.zipCode.equalsIgnoreCase(that.zipCode)))  return false;
 		if (!(this.phoneNumber.equalsIgnoreCase(that.phoneNumber))) return false;
 		if (!(this.email.equalsIgnoreCase(that.email)))  return false;
-		return true;	
+		return true;
 	}
 }

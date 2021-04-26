@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddressBook {
 	ArrayList<Person>contacts;
@@ -236,7 +237,7 @@ public class AddressBook {
         	return list;
 	}
 
-       //method to get persons in given state
+        //method to get persons in given state
         public List<Person> getPersonsByState(String stateName) {
         	List<Person>list = personsInState.entrySet()
 			   		  	 .stream()
@@ -274,13 +275,40 @@ public class AddressBook {
         	else
         		System.out.println("Total No. Of Persons Found In "+stateName.toUpperCase()+" Are :"+personsInState.stream().count());
         }
+
         //method to sort person by first name and last name
-	public void sortPersonsByName() {
-		List<Person> sortedList = contacts.stream()
+        public void sortPersonsByName() {
+        	List<Person> sortedList = contacts.stream()
 		            			  .sorted(Comparator.comparing(Person::getFirstName)
 		            		 	                    .thenComparing(Person::getLastName))
 		            			  .collect(Collectors.toList());
-		System.out.println("\n--------- SORTED LIST OF PERSONS ------------\n");
+        	System.out.println("\n--------- SORTED LIST OF PERSONS BY NAME ------------\n");
+        	sortedList.forEach(System.out::println);
+	}
+        //method to sort person by city
+	public void sortPersonsByCity() {
+		List<Person> sortedList = contacts.stream()
+						  .sorted(Comparator.comparing(Person::getCity))
+						  .collect(Collectors.toList());
+		System.out.println("\n--------- SORTED LIST OF PERSONS BY CITY ------------\n");
+		sortedList.forEach(System.out::println);
+
+	}
+        //method to sort person by state
+	public void sortPersonsByState() {
+		List<Person> sortedList = contacts.stream()
+						  .sorted(Comparator.comparing(Person::getState))
+						  .collect(Collectors.toList());
+		System.out.println("\n--------- SORTED LIST OF PERSONS BY STATE ------------\n");
+			sortedList.forEach(System.out::println);
+
+	}
+        //method to sort person by ZipCode
+	public void sortPersonsByZipCode() {
+		List<Person> sortedList = contacts.stream()
+      			  			  .sorted(Comparator.comparingInt(Person::getZipCode))
+      			  			  .collect(Collectors.toList());
+		System.out.println("\n--------- SORTED LIST OF PERSONS BY ZIP CODE ------------\n");
 		sortedList.forEach(System.out::println);
 	}
 }

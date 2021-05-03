@@ -1,5 +1,6 @@
 package com.addressbooksystem;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.*;
 
@@ -20,7 +21,7 @@ public class AddressBookMain {
 					  + "6]Display All AddressBooks\n7]View Person by City or State In Current Address Book\n"
 					  + "8]Search Person By City Or State In All Address Books\n9]Count No. Of Persons by City Or State\n"
 					  + "10]Sort Entries in AddressBook By Person's Name\n11]Ability To Sort Entries In AddressBook"
-					  + " By City, State Or ZipCode\n12]Exit");
+					  + " By City, State Or ZipCode\n12]Read Or Write Person Data Into File\n13]Exit");
 			choice=userInput.nextInt();
 			userInput.nextLine();
 			switch(choice) {
@@ -49,9 +50,11 @@ public class AddressBookMain {
 					break;
 				case 11: SortEntriesByCityOrStateOrZipcode();
 					break;
-				case 12: System.exit(0);
+				case 12: selectreadOrWriteFromFile();
+					break;
+				case 13: System.exit(0);
 			}
-		}while(choice!=12);
+		}while(choice!=13);
 	}
 
 	//method to check whether addressBook contains given name
@@ -190,4 +193,18 @@ public class AddressBookMain {
         		default : System.out.println("Invalid Input");
         	}
     	}
+        //select options to read or write from file
+        public static void selectreadOrWriteFromFile() {
+        	Scanner userInput=new Scanner(System.in);
+        	System.out.println("Enter (W) to Write to a File\nEnter (R) to Read From a File");
+        	System.out.print("Enter your choice:");
+        	String choice=userInput.nextLine();
+        	if(choice.equalsIgnoreCase("w"))
+        		addressbook.writeDataToFile();
+        	else if(choice.equalsIgnoreCase("r"))
+        		addressbook.readDataFromFile();
+        	else
+        		System.out.println("Invalid Input!");
+    	}
+
 }

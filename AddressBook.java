@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.io.*;
 
 public class AddressBook {
 	ArrayList<Person>contacts;
@@ -16,6 +17,7 @@ public class AddressBook {
 	//non-static variables
 	HashMap<Person,String> personsInCity = new HashMap<Person,String>();
         HashMap<Person,String> personsInState = new HashMap<Person,String>();
+        File newFile = new File("C:\\Users\\SHAHEEN\\eclipse-workspace\\JavaPrograms\\src\\Address_Book_Problem\\PersonData.txt");
 
 	public AddressBook() {
 		contacts=new ArrayList<Person>();
@@ -310,5 +312,46 @@ public class AddressBook {
       			  			  .collect(Collectors.toList());
 		System.out.println("\n--------- SORTED LIST OF PERSONS BY ZIP CODE ------------\n");
 		sortedList.forEach(System.out::println);
+	}
+	//method to write employee data to a file
+	public void writeDataToFile() {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(newFile);
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			for(Person person : contacts) 
+				objectOut.writeObject(person);
+			objectOut.writeObject(null);
+			objectOut.close();
+			fileOut.close();
+			System.out.println("Records sucessfully written to a file!");
+		}catch(FileNotFoundException e) {
+			System.out.println("File Not Found!");
+		}catch (IOException e) {
+            		System.out.println("Error initializing stream");
+		}
+	}
+	//method to read employee data from a file
+	public void readDataFromFile() {
+		try {
+			FileInputStream fileIn = new FileInputStream(newFile);
+			@SuppressWarnings("resource")
+			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+			System.out.println("\nReading Data From File..........\nRecords Found :->");
+			while(true) {
+				Person person=(Person) objectIn.readObject();
+				if (person == null) break;
+				System.out.println(person);
+			}
+		objectIn.close();
+		fileIn.close();
+		}catch(FileNotFoundException e) {
+			System.out.println("File Not Found!");
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (EOFException e) {
+            		System.out.println("Reached End Of File.");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

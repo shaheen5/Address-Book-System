@@ -105,4 +105,18 @@ public class AddressBookTest {
            	e.printStackTrace();
         }
     }
+    @Test
+    public void givenPersonDetails_WhenUpdated_ShouldSyncWithDatabase(){
+        try{
+            addressBook.readDataFromDatabase(DB_IO);
+            //update address,city,state and zipCode of given person
+            addressBook.updatePersonDetails("Pallavi","Sehjra","Amritsar",
+                                            "Punjab","148109");
+            boolean result = addressBook.checkAddressBookInSyncWithDB("Pallavi");
+            Assert.assertTrue(result);
+
+        } catch (MyAddressBookException e) {
+            e.printStackTrace();
+        }
+    }
 }

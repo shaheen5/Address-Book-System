@@ -42,7 +42,7 @@ public class AddressBook {
     	private  static final String JSON_FILE_PATH = "src\\Address_Book_Problem1\\resources\\PersonContacts.json";
     
    	//declare IOService constants using enum
-    	public enum IOService{CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
+    	public enum IOService {CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
     
     	public AddressBook() {
 		contacts=new ArrayList<Person>();
@@ -497,4 +497,31 @@ public class AddressBook {
         	}
         	return null;
     	}
+    	//check person details in memory are in sync with database
+    	public boolean checkAddressBookInSyncWithDB(String name) throws MyAddressBookException  {
+        	List<Person> contactPersons = addressBookDBService.getPersonData(name);
+              	return contactPersons.get(0).equals(getPersonData(name));
+          }
+    	//retrieve Person data by name
+        private Person getPersonData(String name) {
+            	return contacts.stream()
+                               .filter(person->person.firstName.equalsIgnoreCase(name))
+                               .findFirst()
+                               .orElse(null);
+        }
+      
+    	//update person details
+        public void updatePersonDetails(String name , String address,String city,String state,String zipCode)
+                                        throws MyAddressBookException {
+            	int result = addressBookDBService.updatePersonData(name,address,city,state,zipCode);
+            	if(result == 0)
+                	throw new MyAddressBookException("Update To Database Failed!");
+            	Person person = this.getPersonData(name);
+            	if(person != null) {
+                	person.setAddress(address);
+                	person.setCity(city);
+                	person.setState(state);
+                	person.setZipCode(zipCode);
+            	}
+        }
 }

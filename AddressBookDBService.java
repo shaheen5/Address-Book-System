@@ -53,4 +53,54 @@ import java.util.List;
 	        }
 	        return contacts;
 	    }
+	    //update person details in database
+	    public int updatePersonData(String name, String address,String city,String state ,String zipCode)
+	    							throws MyAddressBookException{
+	    	String sql = "  UPDATE contacts SET address = ? ,city = ? ,state =? ,zip_code = ? WHERE first_name = ? ;";
+	    	try (Connection connection = this.getConnection()) {
+	    		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+	    		preparedStatement.setString(1, address);
+	    		preparedStatement.setString(2, city);
+	    		preparedStatement.setString(3, state);
+	    		preparedStatement.setString(4, zipCode);
+	    		preparedStatement.setString(5,name);
+	    		return preparedStatement.executeUpdate();
+	    	} catch (SQLException e) {
+	    		throw new MyAddressBookException("Connection Error Occurred!");
+	    	}
+	    }
+	    //retrieve from database , details of person having given name
+	    public List<Person> getPersonData(String name) throws MyAddressBookException {
+	        List<Person> contactPersons = new ArrayList<>();
+	        String sql = " SELECT * FROM contacts WHERE first_name = ? ";
+	        try (Connection connection = this.getConnection()) {
+	            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+	            preparedStatement.setString(1, name);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+	            contactPersons = this.getPersonData(resultSet);
+	        } catch (SQLException e) {
+	    		throw new MyAddressBookException("Connection Error Occurred!");
+	    	}
+	        return contactPersons;
+	    }
+	    // retrive fields of person record from given resultset and create new person with that details
+	    private List<Person> getPersonData(ResultSet resultSet) throws MyAddressBookException {
+	        List<Person> contacts = new ArrayList<>();
+	        try {
+	            while (resultSet.next()) {
+	                String firstName = resultSet.getString("first_name");
+	                String lastName = resultSet.getString("last_name");
+	                String address = resultSet.getString("address");
+	                String city = resultSet.getString("city");
+	                String state = resultSet.getString("state");
+	                String zipCode = resultSet.getString("zip_code");
+	                String phoneNumber = resultSet.getString("phone_number");
+	                String email = resultSet.getString("email");
+	                contacts.add(new Person(firstName,lastName,address,city,state,zipCode,phoneNumber,email));
+	            }
+	        } catch (SQLException e) {
+	    		throw new MyAddressBookException("Database Access Denied!");
+	    	}
+	        return contacts;
+	    }
 	}

@@ -1,4 +1,4 @@
-package com.addressbooksystem;
+xpackage com.addressbooksystem;
 
 import java.io.Serializable;
 

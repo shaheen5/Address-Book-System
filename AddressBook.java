@@ -29,18 +29,24 @@ import java.nio.file.Paths;
 
 public class AddressBook {
 	ArrayList<Person>contacts;
+	private static AddressBookDBService addressBookDBService;
 
 	//Static variables
 	static String firstName,lastName,address,city,state,zipCode,phoneNumber,email;
 	//non-static variables
 	HashMap<Person,String> personsInCity = new HashMap<Person,String>();
-        HashMap<Person,String> personsInState = new HashMap<Person,String>();
-        File newFile = new File("src\\Address_Book_Problem1\\resources\\PersonData.txt");
-        private static final String CSV_READ_FILE_PATH = "src\\Address_Book_Problem1\\resources\\ReadContacts.csv";
-        private  static final String CSV_WRITE_FILE_PATH = "src\\Address_Book_Problem1\\resources\\WriteContacts.csv";
-        private  static final String JSON_FILE_PATH = "src\\Address_Book_Problem1\\resources\\PersonContacts.json";
-	public AddressBook() {
+    	HashMap<Person,String> personsInState = new HashMap<Person,String>();
+    	File newFile = new File("src\\Address_Book_Problem1\\resources\\PersonData.txt");
+    	private static final String CSV_READ_FILE_PATH = "src\\Address_Book_Problem1\\resources\\ReadContacts.csv";
+    	private  static final String CSV_WRITE_FILE_PATH = "src\\Address_Book_Problem1\\resources\\WriteContacts.csv";
+    	private  static final String JSON_FILE_PATH = "src\\Address_Book_Problem1\\resources\\PersonContacts.json";
+    
+   	 //declare IOService constants using enum
+    	public enum IOService{CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
+    
+    	public AddressBook() {
 		contacts=new ArrayList<Person>();
+		addressBookDBService = AddressBookDBService.getInstance();
 	}
 
 	public ArrayList<Person> getContacts() {
@@ -454,6 +460,14 @@ public class AddressBook {
                 	e.printStackTrace();
             	} catch (ParseException e) {
 			e.printStackTrace();
-		}
+            	}
         }
+    	//read data from database
+    	public List<Person> readDataFromDatabase(IOService ioService) throws MyAddressBookException {
+        	if(ioService.equals(IOService.DB_IO)){
+        	    	this.contacts = (ArrayList<Person>) addressBookDBService.readDataFromDatabase();
+            		return contacts;
+        	}
+        	return null;
+    	}
 }

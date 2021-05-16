@@ -28,20 +28,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class AddressBook {
-	ArrayList<Person>contacts;
+	public ArrayList<Person>contacts;
 	private static AddressBookDBService addressBookDBService;
 
 	//Static variables
 	static String firstName,lastName,address,city,state,zipCode,phoneNumber,email;
 	//non-static variables
-	HashMap<Person,String> personsInCity = new HashMap<Person,String>();
-    	HashMap<Person,String> personsInState = new HashMap<Person,String>();
+	public HashMap<Person,String> personsInCity = new HashMap<Person,String>();
+    	public HashMap<Person,String> personsInState = new HashMap<Person,String>();
     	File newFile = new File("src\\Address_Book_Problem1\\resources\\PersonData.txt");
     	private static final String CSV_READ_FILE_PATH = "src\\Address_Book_Problem1\\resources\\ReadContacts.csv";
     	private  static final String CSV_WRITE_FILE_PATH = "src\\Address_Book_Problem1\\resources\\WriteContacts.csv";
     	private  static final String JSON_FILE_PATH = "src\\Address_Book_Problem1\\resources\\PersonContacts.json";
     
-   	 //declare IOService constants using enum
+   	//declare IOService constants using enum
     	public enum IOService{CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
     
     	public AddressBook() {
@@ -97,7 +97,15 @@ public class AddressBook {
 		System.out.println("Added:- "+person);
 		}
 	}
-
+	
+	//add given person to contacts list of addressbook
+    	public void addPerson(Person person) {
+        	for (Person contactPerson : contacts) {
+            	if(contactPerson.equals(person))
+                	return;
+        	}
+        	contacts.add(person);
+    	}
 	//method to validate and enter proper first name
 	public static void validateFirstName() {
 		Scanner userInput=new Scanner(System.in);
@@ -226,6 +234,16 @@ public class AddressBook {
 			System.out.println("This name does not exists!");
 		}
 	}
+	//edit address and city of person having given name and return that person 
+    	public Person editPerson(String name,String address,String city) {
+        	Person editPerson = contacts.stream()
+        				    .filter(person->person.firstName.equals(name))
+        				    .findFirst()
+        				    .orElse(null);
+        	editPerson.setAddress(address);
+        	editPerson.setCity(city);
+        	return editPerson;
+    	}
 
 	//method to delete a person from addressBook
 	public void deletePerson() {
@@ -245,6 +263,15 @@ public class AddressBook {
 			System.out.println("This name does not exists!");
 		}
 	}
+	
+	//delete contact by name and return deleted person
+    	public void deletePerson(String name) {
+        	Person deletePerson = contacts.stream()
+                	                      .filter(person->person.firstName.equals(name))
+                        	              .findFirst()
+                                	      .orElse(null);
+       		contacts.remove(deletePerson);
+    	}
 	//method to display persons in current addressBook
 	public void display() {
 		System.out.println("\n*****************All Contacts************************\n");

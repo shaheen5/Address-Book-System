@@ -18,7 +18,7 @@ import java.util.List;
 	    private Connection getConnection() throws SQLException {
 	        String jdbcURL = "jdbc:mysql://localhost:3306/addressbook_service?allowPublicKeyRetrieval=true&useSSL=false";
 	        String userName = "root";
-	        String passWord = "Allahisgreat@786";
+	        String passWord = "shaheen@5";
 	        Connection connection;
 	        System.out.println("Connecting to database " + jdbcURL);
 	        connection = DriverManager.getConnection(jdbcURL, userName, passWord);

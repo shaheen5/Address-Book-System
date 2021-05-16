@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
@@ -32,6 +38,7 @@ public class AddressBook {
         File newFile = new File("src\\Address_Book_Problem1\\resources\\PersonData.txt");
         private static final String CSV_READ_FILE_PATH = "src\\Address_Book_Problem1\\resources\\ReadContacts.csv";
         private  static final String CSV_WRITE_FILE_PATH = "src\\Address_Book_Problem1\\resources\\WriteContacts.csv";
+        private  static final String JSON_FILE_PATH = "src\\Address_Book_Problem1\\resources\\PersonContacts.json";
 	public AddressBook() {
 		contacts=new ArrayList<Person>();
 	}
@@ -421,4 +428,32 @@ public class AddressBook {
             		e.printStackTrace();
         	}
     	}
+    	//convert person object to Json and write to Json file
+        public void writeDataToJSONFile() {
+        	ObjectMapper objectMapper = new ObjectMapper();
+            	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+            	try{
+                	objectMapper.writeValue(new File(JSON_FILE_PATH),contacts);
+                	System.out.println("Written to Json file Succesfully!");
+            	} catch (IOException e) {
+                	e.printStackTrace();
+            	}
+        }
+        //read Json data from file
+        public void readDataFromJSONFile() {
+            	//JSON parser object to parse read file
+           	 JSONParser jsonParser = new JSONParser();
+            	try (FileReader reader = new FileReader(JSON_FILE_PATH)){
+                	//Read JSON file
+                	Object obj = jsonParser.parse(reader);
+                	JSONArray personList = (JSONArray) obj;
+                	System.out.println(personList);
+            	} catch (FileNotFoundException e) {
+                	e.printStackTrace();
+            	} catch (IOException e) {
+                	e.printStackTrace();
+            	} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        }
 }

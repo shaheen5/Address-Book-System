@@ -21,7 +21,8 @@ public class AddressBookMain {
 					  + "6]Display All AddressBooks\n7]View Person by City or State In Current Address Book\n"
 					  + "8]Search Person By City Or State In All Address Books\n9]Count No. Of Persons by City Or State\n"
 					  + "10]Sort Entries in AddressBook By Person's Name\n11]Ability To Sort Entries In AddressBook"
-					  + "By City, State Or ZipCode\n12]Read Or Write Person Data Into File\n13]Read Or Write Contacts Into CSV File\n14]Exit");
+					  + "By City, State Or ZipCode\n12]Read Or Write Person Data Into File\n13]Read Or Write Contacts Into "
+					  + "CSV File\n14]Read or Write the AddressBook with Persons Contact as JSON File 15]Exit\"");
 			choice=userInput.nextInt();
 			userInput.nextLine();
 			switch(choice) {
@@ -54,9 +55,11 @@ public class AddressBookMain {
 					break;
 				case 13: selectReadOrWriteFromCSVFile();
 					break;
-				case 14: System.exit(0);
-			}
-		}while(choice!=14);
+				case 14: selectReadOrWriteToJSONFile();
+					break;
+				case 15: System.exit(0);			
+				}
+		}while(choice!=15);
 	}
 
 	//method to check whether addressBook contains given name
@@ -219,6 +222,19 @@ public class AddressBookMain {
             	else if(choice.equalsIgnoreCase("r"))
                 	addressbook.readDataFromCSVFile();
             	else
+                	System.out.println("Invalid Input!");
+        }
+        //select options to read or write from JSON File
+        public static void selectReadOrWriteToJSONFile() {
+                Scanner userInput=new Scanner(System.in);
+                System.out.println("Enter (W) to Write to a File\nEnter (R) to Read From a JSON File");
+                System.out.print("Enter your choice:");
+                String choice=userInput.nextLine();
+                if(choice.equalsIgnoreCase("w"))
+                	addressbook.writeDataToJSONFile();
+                else if(choice.equalsIgnoreCase("r"))
+                	addressbook.readDataFromJSONFile();
+                else
                 	System.out.println("Invalid Input!");
         }
 

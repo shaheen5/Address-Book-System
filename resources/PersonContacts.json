@@ -1,0 +1,19 @@
+[ {
+  "firstName" : "SHAHEEN",
+  "lastName" : "KHAN",
+  "address" : "KOREGAON PARK",
+  "city" : "PUNE",
+  "state" : "MAHARASHTRA",
+  "zipCode" : 211611,
+  "phoneNumber" : "7447423211",
+  "email" : "shaheen5@gmail.com"
+}, {
+  "firstName" : "ANINDO",
+  "lastName" : "BANERJEE",
+  "address" : "SHANTI CHOWK",
+  "city" : "BANGALORE",
+  "state" : "KARNATAKA",
+  "zipCode" : 800111,
+  "phoneNumber" : "8723456789",
+  "email" : "aanindo@yahoo.in"
+} ]

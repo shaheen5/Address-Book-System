@@ -3,11 +3,23 @@ package com.addressbooksystem;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class AddressBook {
 	ArrayList<Person>contacts;
@@ -17,8 +29,9 @@ public class AddressBook {
 	//non-static variables
 	HashMap<Person,String> personsInCity = new HashMap<Person,String>();
         HashMap<Person,String> personsInState = new HashMap<Person,String>();
-        File newFile = new File("C:\\Users\\SHAHEEN\\eclipse-workspace\\JavaPrograms\\src\\Address_Book_Problem\\PersonData.txt");
-
+        File newFile = new File("src\\Address_Book_Problem1\\resources\\PersonData.txt");
+        private static final String CSV_READ_FILE_PATH = "src\\Address_Book_Problem1\\resources\\ReadContacts.csv";
+        private  static final String CSV_WRITE_FILE_PATH = "src\\Address_Book_Problem1\\resources\\WriteContacts.csv";
 	public AddressBook() {
 		contacts=new ArrayList<Person>();
 	}
@@ -354,4 +367,58 @@ public class AddressBook {
 			e.printStackTrace();
 		}
 	}
+	//write java bean to csv file
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    		public void writeDataToCSVFile()  {
+        	final String[] CSV_HEADER = { "firstName", "lastName", "address", "city","state","zipCode","phoneNumber","email" };
+        	// Create Mapping Strategy to arrange the column name in order
+        	ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+        	mappingStrategy.setType(Person.class);
+        	// Arrange column name as provided in array.
+        	mappingStrategy.setColumnMapping(CSV_HEADER);
+
+        	try{
+            		Writer writer = Files.newBufferedWriter(Paths.get(CSV_WRITE_FILE_PATH));
+            		// Creating StatefulBeanToCsv object
+            		StatefulBeanToCsv<Person> beanToCsv = new StatefulBeanToCsvBuilder(writer)
+                    						 .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                    						 .withMappingStrategy(mappingStrategy)
+                    						 .build();
+            		try {
+                		// Write list to StatefulBeanToCsv object
+                		beanToCsv.write(contacts);
+                		System.out.println("Write To CSV File Done Succesfully!");
+            		} catch (CsvDataTypeMismatchException e) {
+                		e.printStackTrace();
+            		} catch (CsvRequiredFieldEmptyException e) {
+                		e.printStackTrace();
+            		}
+            		writer.close();
+        	}catch(IOException e){
+           		 e.printStackTrace();
+        	}
+   	}
+    	//method to read person data from a CSV file - csv to java bean
+    	@SuppressWarnings("unchecked")
+    	public void readDataFromCSVFile()  {
+        	try (
+                	Reader reader = Files.newBufferedReader(Paths.get(CSV_READ_FILE_PATH));
+        	) {
+            	CsvToBean<CSVPerson> csvToBean = new  CsvToBeanBuilder(reader)
+                                                     .withType(CSVPerson.class)
+                                                     .withIgnoreLeadingWhiteSpace(true)
+                                                     .build();
+            	Iterator<CSVPerson> csvIterator = csvToBean.iterator();
+            	if(csvIterator.next() == null) {
+                	System.out.println("CSV File Is Empty!");
+                	return;
+            	}
+            	while (csvIterator.hasNext()) {
+                	CSVPerson contact = csvIterator.next();
+                	System.out.println(contact);
+            	}
+        	}catch(Exception e) {
+            		e.printStackTrace();
+        	}
+    	}
 }

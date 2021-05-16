@@ -8,7 +8,7 @@ public class AddressBookMain {
 	static HashMap<String,AddressBook>addressbooks=new HashMap<String,AddressBook>();
 	static AddressBook addressbook=new AddressBook();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		System.out.println("Welcome to Address Book Program !!!");
 		@SuppressWarnings("resource")
 		Scanner userInput=new Scanner(System.in);
@@ -21,7 +21,7 @@ public class AddressBookMain {
 					  + "6]Display All AddressBooks\n7]View Person by City or State In Current Address Book\n"
 					  + "8]Search Person By City Or State In All Address Books\n9]Count No. Of Persons by City Or State\n"
 					  + "10]Sort Entries in AddressBook By Person's Name\n11]Ability To Sort Entries In AddressBook"
-					  + " By City, State Or ZipCode\n12]Read Or Write Person Data Into File\n13]Exit");
+					  + "By City, State Or ZipCode\n12]Read Or Write Person Data Into File\n13]Read Or Write Contacts Into CSV File\n14]Exit");
 			choice=userInput.nextInt();
 			userInput.nextLine();
 			switch(choice) {
@@ -52,9 +52,11 @@ public class AddressBookMain {
 					break;
 				case 12: selectreadOrWriteFromFile();
 					break;
-				case 13: System.exit(0);
+				case 13: selectReadOrWriteFromCSVFile();
+					break;
+				case 14: System.exit(0);
 			}
-		}while(choice!=13);
+		}while(choice!=14);
 	}
 
 	//method to check whether addressBook contains given name
@@ -206,5 +208,18 @@ public class AddressBookMain {
         	else
         		System.out.println("Invalid Input!");
     	}
+        //select options to read or write from CSV File
+        public static void selectReadOrWriteFromCSVFile() throws IOException  {
+            	Scanner userInput=new Scanner(System.in);
+            	System.out.println("Enter (W) to Write to a File\nEnter (R) to Read From a CSV File");
+            	System.out.print("Enter your choice:");
+            	String choice=userInput.nextLine();
+                if(choice.equalsIgnoreCase("w"))
+                	addressbook.writeDataToCSVFile();
+            	else if(choice.equalsIgnoreCase("r"))
+                	addressbook.readDataFromCSVFile();
+            	else
+                	System.out.println("Invalid Input!");
+        }
 
 }

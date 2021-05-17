@@ -11,6 +11,7 @@ import Address_Book_Problem1.Person;
 
 import static Address_Book_Problem1.AddressBook.IOService.DB_IO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookTest {
@@ -114,6 +115,19 @@ public class AddressBookTest {
                                             "Punjab","148109");
             boolean result = addressBook.checkAddressBookInSyncWithDB("Pallavi");
             Assert.assertTrue(result);
+
+        } catch (MyAddressBookException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void givenDateRange_WhenRetrievedFromDatabase_ShouldMatchPersonCount(){
+        try{
+            addressBook.readDataFromDatabase(DB_IO);
+            LocalDate startDate = LocalDate.of(2018,01,01);
+            LocalDate endDate = LocalDate.now();
+            List<Person> contacts = addressBook.readPersonDataAddedBetweenDateRange(DB_IO,startDate,endDate);
+            Assert.assertEquals(4,contacts.size());
 
         } catch (MyAddressBookException e) {
             e.printStackTrace();

@@ -26,6 +26,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 
 public class AddressBook {
 	public ArrayList<Person>contacts;
@@ -524,4 +525,11 @@ public class AddressBook {
                 	person.setZipCode(zipCode);
             	}
         }
+        //read person data added between date range from database 
+        public List<Person> readPersonDataAddedBetweenDateRange(IOService ioService, LocalDate startDate,
+                			LocalDate endDate) throws MyAddressBookException  {
+        	if(ioService.equals(IOService.DB_IO))
+        	    	return addressBookDBService.getPersonDataAddedBetweenDateRange(startDate,endDate);
+    	        return null;
+	}
 }

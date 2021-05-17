@@ -103,4 +103,11 @@ import java.util.List;
 	    	}
 	        return contacts;
 	    }
+	    //retrieve records from contacts database having date between given range 
+	    public List<Person> getPersonDataAddedBetweenDateRange( LocalDate startDate, LocalDate endDate)
+            							    throws MyAddressBookException {
+	    	String sql = String.format("SELECT * FROM contacts WHERE date_added BETWEEN '%s' AND '%s' ;",
+	    			       	   Date.valueOf(startDate), Date.valueOf(endDate));
+	    	return this.getPersonsDataUsingDB(sql);
+	    }
 	}

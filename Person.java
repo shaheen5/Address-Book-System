@@ -1,6 +1,7 @@
 package com.addressbooksystem;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class Person implements Serializable{
     String firstName;
@@ -11,6 +12,7 @@ public class Person implements Serializable{
     String zipCode;
     String phoneNumber;
     String email;
+    LocalDate dateAdded;
    
     public Person(String firstName, String lastName, String address, String city, String state, String zipCode,
                   String phoneNumber, String email) {
@@ -22,6 +24,11 @@ public class Person implements Serializable{
         this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+    public Person(String firstName, String lastName, String address, String city, String state, String zipCode,
+            	  String phoneNumber, String email,LocalDate dateAdded){
+    	this(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
+    	this.dateAdded = dateAdded;
     }
     @Override
     public String toString() {

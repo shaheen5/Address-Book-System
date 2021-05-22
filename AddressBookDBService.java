@@ -110,4 +110,20 @@ import java.util.List;
 	    			       	   Date.valueOf(startDate), Date.valueOf(endDate));
 	    	return this.getPersonsDataUsingDB(sql);
 	    }
+	    //get person count by city from database and return the the result
+	    public int readPersonDataByCity(String city) throws MyAddressBookException {
+	        String sql = String.format("SELECT COUNT(first_name) AS CITY_COUNT FROM contacts WHERE city = '%s';",
+	                                    city);
+	        try (Connection connection = this.getConnection()) {
+	            int cityCount = 0;
+	            Statement statement = connection.createStatement();
+	            ResultSet resultSet = statement.executeQuery(sql);
+	            while (resultSet.next()) {
+	                cityCount = resultSet.getInt("CITY_COUNT");
+	            }
+	            return cityCount;
+	        }catch (SQLException e){
+	            throw new MyAddressBookException("Database Access Denied !");
+	        }
+	    }
 	}

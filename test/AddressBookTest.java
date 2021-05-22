@@ -133,4 +133,14 @@ public class AddressBookTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void givenCity_WhenRetrievedFromDatabase_ShouldReturnPersonCount(){
+        try{
+            addressBook.readDataFromDatabase(DB_IO);
+            int cityCount = addressBook.readPersonDataByCity(DB_IO,"Pune");
+            Assert.assertEquals(2,cityCount);
+        } catch (MyAddressBookException e) {
+            e.printStackTrace();
+        }
+    }
 }

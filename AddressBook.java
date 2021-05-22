@@ -531,5 +531,11 @@ public class AddressBook {
         	if(ioService.equals(IOService.DB_IO))
         	    	return addressBookDBService.getPersonDataAddedBetweenDateRange(startDate,endDate);
     	        return null;
-	}
+        }
+        //read person data searched by city from db
+        public int readPersonDataByCity(IOService ioService,String city) throws MyAddressBookException  {
+                if(ioService.equals(IOService.DB_IO))
+           	        return addressBookDBService.readPersonDataByCity(city);
+            	return 0;
+        }
 }

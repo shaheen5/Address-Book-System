@@ -143,4 +143,18 @@ public class AddressBookTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void givenNewPerson_WhenAdded_ShouldSyncWithDB(){
+        try{
+            System.out.println(addressBook.readDataFromDatabase(DB_IO));
+            addressBook.addNewPerson("Sana","Shaikh","Sinhagad Road","Nashik",
+                                "Mahrashtra","411001","9922134553",
+                                "sana345@yahoo.in",LocalDate.now(),new String[] {"Book1","Book3"} );
+            boolean result = addressBook.checkAddressBookInSyncWithDB("Sana");
+            Assert.assertTrue(result);
+
+        } catch (MyAddressBookException e) {
+            e.printStackTrace();
+        }
+    }
 }

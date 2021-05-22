@@ -13,6 +13,7 @@ public class Person implements Serializable{
     String phoneNumber;
     String email;
     LocalDate dateAdded;
+    String [] bookName = new String[]{};
    
     public Person(String firstName, String lastName, String address, String city, String state, String zipCode,
                   String phoneNumber, String email) {
@@ -29,6 +30,11 @@ public class Person implements Serializable{
             	  String phoneNumber, String email,LocalDate dateAdded){
     	this(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
     	this.dateAdded = dateAdded;
+    }
+    public Person(String firstName, String lastName, String address, String city, String state, String zipCode,
+            String phoneNumber, String email,LocalDate dateAdded,String[] bookName){
+    	this(firstName, lastName, address, city, state, zipCode, phoneNumber, email,dateAdded);
+    	this.bookName = bookName;
     }
     @Override
     public String toString() {
@@ -90,6 +96,12 @@ public class Person implements Serializable{
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
     }
     @Override
     public boolean equals(Object object) {

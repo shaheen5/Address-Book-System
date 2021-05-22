@@ -126,4 +126,61 @@ import java.util.List;
 	            throw new MyAddressBookException("Database Access Denied !");
 	        }
 	    }
+	    //add new person in contact database
+	    public Person addNewPersonInDB(String firstName, String lastName, String address, String city, String state,
+	                                 String zipCode, String phoneNumber, String email, LocalDate dateAdded,
+	                                String [] bookName) throws MyAddressBookException {
+	        Connection connection = null;
+	        Person person = null;
+	        try {
+	            connection = this.getConnection();
+	            connection.setAutoCommit(false);
+	        } catch (SQLException e) {
+	            throw new MyAddressBookException("Connection To Database Failed!");
+	        }
+	        try (Statement statement = connection.createStatement()) {
+	            String sql = String.format("INSERT INTO contacts (first_name,last_name,address,city," +
+	                                        "state,zip_code,phone_number,email,date_added)VALUES" +
+	                                        "('%s','%s','%s','%s','%s','%s','%s','%s','%s');", firstName, lastName,
+	                                        address, city, state, zipCode, phoneNumber, email,Date.valueOf(dateAdded));
+	            statement.executeUpdate(sql);
+	        } catch (SQLException throwables) {
+	            try {
+	                connection.rollback();
+	            } catch (SQLException sqlException) {
+	                throw new MyAddressBookException("Roll Back Failed!");
+	            }
+	        }
+	        try (Statement statement = connection.createStatement()) {
+	            int affectedRows ;
+	            for (String book : bookName) {
+	                String sql = String.format("INSERT INTO addressbook_contacts (book_name,first_name) VALUES" +
+	                        "('%s','%s');", book, firstName);
+	                affectedRows = statement.executeUpdate(sql);
+	                if (affectedRows == 1)
+	                    person = new Person(firstName, lastName, address, city, state, zipCode,
+	                                        phoneNumber, email, dateAdded);
+	            }
+	        } catch (SQLException throwables) {
+	            try {
+	                connection.rollback();
+	            } catch (SQLException sqlException) {
+	                throw new MyAddressBookException("Roll Back Failed!");
+	            }
+	        }
+	        try {
+	            connection.commit();
+	        } catch (SQLException ex) {
+	            throw new MyAddressBookException("Commit Failed!");
+	        } finally {
+	            if (connection != null) {
+	                try {
+	                    connection.close();
+	                } catch (SQLException e) {
+	                    throw new MyAddressBookException("Connection is closed !");
+	                }
+	            }
+	        }
+	        return person;
+	    }
 	}

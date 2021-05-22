@@ -538,4 +538,11 @@ public class AddressBook {
            	        return addressBookDBService.readPersonDataByCity(city);
             	return 0;
         }
+        //add new peron in contact memory and DB
+        public  void addNewPerson(String firstName, String lastName, String address, String city, String state,
+                                 String zipCode, String phoneNumber, String email, LocalDate dateAdded,String [] bookName)
+                                 throws MyAddressBookException {
+            	this.contacts.add(addressBookDBService.addNewPersonInDB(firstName,lastName,address,city,state,zipCode,
+                                                                    phoneNumber, email,dateAdded,bookName));
+        }
 }
